@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<Adventurers>
+    <Adventurer>
+        <FIRSTNAME>10 Stat</FIRSTNAME>
+        <LASTNAME>Man</LASTNAME>
+        <GENDER>Male</GENDER>
+        <HP> 100 </HP>
+        <STAMINA> 100 </STAMINA>
+        <STRENGTH> 10 </STRENGTH>
+        <AGILITY> 10 </AGILITY>
+        <INTELLIGENCE> 10 </INTELLIGENCE>
+        <STRENGTHXP>80</STRENGTHXP>
+        <AGILITYXP>75</AGILITYXP>
+        <INTELLIGENCEXP>25</INTELLIGENCEXP>
+    </Adventurer>
+    <Adventurer>
+        <FIRSTNAME>John</FIRSTNAME>
+        <LASTNAME>Smith</LASTNAME>
+        <GENDER>Male</GENDER>
+        <HP> 75 </HP>
+        <STAMINA> 25 </STAMINA>
+        <STRENGTH> 8 </STRENGTH>
+        <AGILITY> 4 </AGILITY>
+        <INTELLIGENCE> 2 </INTELLIGENCE>
+        <STRENGTHXP>10</STRENGTHXP>
+        <AGILITYXP>20</AGILITYXP>
+        <INTELLIGENCEXP>30</INTELLIGENCEXP>
+    </Adventurer>
+    <Adventurer>
+      <FIRSTNAME>Mary</FIRSTNAME>
+      <LASTNAME>Queen</LASTNAME>
+      <GENDER>Female</GENDER>
+      <HP> 75 </HP>
+      <STAMINA> 25 </STAMINA>
+      <STRENGTH> 8 </STRENGTH>
+      <AGILITY> 4 </AGILITY>
+      <INTELLIGENCE> 2 </INTELLIGENCE>
+      <STRENGTHXP>40</STRENGTHXP>
+      <AGILITYXP>50</AGILITYXP>
+      <INTELLIGENCEXP>60</INTELLIGENCEXP>
+    </Adventurer>
+    <Adventurer>
+      <FIRSTNAME>Andrew</FIRSTNAME>
+      <LASTNAME>Ryan</LASTNAME>
+      <GENDER>Male</GENDER>
+      <HP> 75 </HP>
+      <STAMINA> 25 </STAMINA>
+      <STRENGTH> 8 </STRENGTH>
+      <AGILITY> 4 </AGILITY>
+      <INTELLIGENCE> 2 </INTELLIGENCE>
+      <STRENGTHXP>90</STRENGTHXP>
+      <AGILITYXP>99</AGILITYXP>
+      <INTELLIGENCEXP>0</INTELLIGENCEXP>
+    </Adventurer>
+</Adventurers>

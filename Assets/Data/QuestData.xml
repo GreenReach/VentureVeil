@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<Quests>
+  <Quest>
+    <Description>Description A</Description>
+    <MinStamina>1</MinStamina>
+    <MaxStamina>4</MaxStamina>
+    <MinStrenght>1</MinStrenght>
+    <MaxStrenght>4</MaxStrenght>
+    <MinAgility>1</MinAgility>
+    <MaxAgility>4</MaxAgility>
+    <MinIntelligence>1</MinIntelligence>
+    <MaxIntelligence>4</MaxIntelligence>
+    <Slots>1</Slots>
+  </Quest>
+  <Quest>
+    <Description>Description B</Description>
+    <MinStamina>1</MinStamina>
+    <MaxStamina>4</MaxStamina>
+    <MinStrenght>1</MinStrenght>
+    <MaxStrenght>4</MaxStrenght>
+    <MinAgility>1</MinAgility>
+    <MaxAgility>4</MaxAgility>
+    <MinIntelligence>1</MinIntelligence>
+    <MaxIntelligence>4</MaxIntelligence>
+    <Slots>3</Slots>
+  </Quest>
+  <Quest>
+    <Description>Description C</Description>
+    <MinStamina>1</MinStamina>
+    <MaxStamina>4</MaxStamina>
+    <MinStrenght>1</MinStrenght>
+    <MaxStrenght>4</MaxStrenght>
+    <MinAgility>1</MinAgility>
+    <MaxAgility>4</MaxAgility>
+    <MinIntelligence>1</MinIntelligence>
+    <MaxIntelligence>4</MaxIntelligence>
+    <Slots>4</Slots>
+  </Quest>
+  <Quest>
+    <Description>Description D</Description>
+    <MinStamina>1</MinStamina>
+    <MaxStamina>4</MaxStamina>
+    <MinStrenght>1</MinStrenght>
+    <MaxStrenght>4</MaxStrenght>
+    <MinAgility>1</MinAgility>
+    <MaxAgility>4</MaxAgility>
+    <MinIntelligence>1</MinIntelligence>
+    <MaxIntelligence>4</MaxIntelligence>
+    <Slots>2</Slots>
+  </Quest>  
+</Quests>
