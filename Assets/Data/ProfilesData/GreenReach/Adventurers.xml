@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<Adventurers>
+    <Adventurer>
+        <FirstName>10 Stat</FirstName>
+        <LastName>Man</LastName>
+        <Gender>Male</Gender>
+        <Hp> 100 </Hp>
+        <Stamina> 100 </Stamina>
+        <Strength> 10 </Strength>
+        <Agility> 10 </Agility>
+        <Intelligence> 10 </Intelligence>
+        <StrengthXP>80</StrengthXP>
+        <AgilityXP>75</AgilityXP>
+        <IntelligenceXP>25</IntelligenceXP>
+    </Adventurer>
+    <Adventurer>
+        <FirstName>John</FirstName>
+        <LastName>Smith</LastName>
+        <Gender>Male</Gender>
+        <Hp> 75 </Hp>
+        <Stamina> 25 </Stamina>
+        <Strength> 8 </Strength>
+        <Agility> 4 </Agility>
+        <Intelligence> 2 </Intelligence>
+        <StrengthXP>10</StrengthXP>
+        <AgilityXP>20</AgilityXP>
+        <IntelligenceXP>30</IntelligenceXP>
+    </Adventurer>
+    <Adventurer>
+      <FirstName>Mary</FirstName>
+      <LastName>Queen</LastName>
+      <Gender>Female</Gender>
+      <Hp> 75 </Hp>
+      <Stamina> 25 </Stamina>
+      <Strength> 8 </Strength>
+      <Agility> 4 </Agility>
+      <Intelligence> 2 </Intelligence>
+      <StrengthXP>40</StrengthXP>
+      <AgilityXP>50</AgilityXP>
+      <IntelligenceXP>60</IntelligenceXP>
+    </Adventurer>
+    <Adventurer>
+      <FirstName>Andrew</FirstName>
+      <LastName>Ryan</LastName>
+      <Gender>Male</Gender>
+      <Hp> 75 </Hp>
+      <Stamina> 25 </Stamina>
+      <Strength> 8 </Strength>
+      <Agility> 4 </Agility>
+      <Intelligence> 2 </Intelligence>
+      <StrengthXP>90</StrengthXP>
+      <AgilityXP>99</AgilityXP>
+      <IntelligenceXP>0</IntelligenceXP>
+    </Adventurer>
+</Adventurers>

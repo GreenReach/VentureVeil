@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
     public Text supplyText;
     public Text dateText;
     public Text adventurerCount;
+    public Text favorsText;
 
     //World Map
     public GameObject worldMap;
@@ -53,12 +54,14 @@ public class GameManager : MonoBehaviour
     private PlayerAPI playerAPI;
     private QuestAPI questAPI;
     private Player player;
+    private FinnishedQuestAPI finnishedQuestAPI;
 
     //GamoObject List
     private List<GameObject> gameObjects = new List<GameObject>();
 
     //Lists 
     private List<Adventurer> playerAdventurers;
+    private List<FinnishedQuest> finnishedQuests;
 
     //Random chances
     private int wonderingAdventurerChance;
@@ -98,9 +101,10 @@ public class GameManager : MonoBehaviour
 
             if (hit.transform != null && hit.transform.name == "Plane")
             {
-                //  CreateQuest();
+                  CreateQuest(CreateRandomMapPoint());
                 //  CreateWonderingAdventurer(CreateRandomMapPoint());
-                CreateBuilder(CreateRandomMapPoint());
+                // CreateBuilder(CreateRandomMapPoint());
+                
             }
         }
     }
@@ -172,12 +176,12 @@ public class GameManager : MonoBehaviour
             playerAdventurers[i].CheckLevelUp();
         }
     }
+
     void CreateWonderingAdventurer(Vector3 startPoint )
     {
         GameObject wanderingAdv = Instantiate(wanderingAdventurer, startPoint, Quaternion.identity);
         gameObjects.Add(wanderingAdv);
     }
-
     void CreateQuest(Vector3 startPoint)
     {
         GameObject flag = (Instantiate(questSign, startPoint, Quaternion.identity));
@@ -217,7 +221,7 @@ public class GameManager : MonoBehaviour
         supplyText.text = "Supply " + player.Supply.ToString() + "(-" + supplyDailyCost + ")";
         dateText.text = "Day " + daysPassed + "  Hour " + hoursPassed;
         adventurerCount.text = "Adventurers " + playerAdventurers.Count + " / " + player.adventurersLimit;
-
+        favorsText.text = "CF: " + player.courtierFavors + " NF: " + player.nobilityFavors + " RF: " + player.royalFavors;
     }
     void RefreshUI()
     {
@@ -225,23 +229,31 @@ public class GameManager : MonoBehaviour
         supplyText.text = "Supply " + player.Supply.ToString() + "(-" + supplyDailyCost + ")";
         dateText.text = "Day " + daysPassed + "  Hour " + hoursPassed;
         adventurerCount.text = "Adventurers " + playerAdventurers.Count + " / " + player.adventurersLimit;
+        favorsText.text = "CF: " + player.courtierFavors + " NF: " + player.nobilityFavors + " RF: " + player.royalFavors;
 
     }
+
     void LoadFromAPI()
     {
+        string username = PlayerPrefs.GetString("Username");
+
         //Player
         playerAPI = getInstance.PlayerAPI;
-        playerAPI.LoadPlayer();
+        playerAPI.LoadPlayer(username);
         player = playerAPI.getPlayer();
 
         //Adventurer
         adventurerAPI = getInstance.AdventurerAPI;
-        adventurerAPI.LoadAdventurers();
+        adventurerAPI.LoadAdventurers(username);
         playerAdventurers = adventurerAPI.getAdventurers();
-
+        
         //Quest
         questAPI = getInstance.QuestAPI;
 
+        //Finnished Quest
+        finnishedQuestAPI = getInstance.FinnishedQuestAPI;
+        finnishedQuestAPI.LoadFinnishedQuests(username);
+        finnishedQuests = finnishedQuestAPI.FinnishedQuests;
     }
 
 
@@ -309,6 +321,74 @@ public class GameManager : MonoBehaviour
         GameObject roomUpgradeScreen =  Instantiate(RoomsScreen, getInstance.UICanvas.transform);
         roomUpgradeScreen.GetComponent<Rooms>().BuilderUpgrade(builder);
     }
+    public bool BuyFavor(string action)
+    {
+        bool result = false;
+        if (action.Equals("courtier") && player.Gold >= VVC.courtierFavorBasePrice)
+        {
+            player.Gold -= VVC.courtierFavorBasePrice;
+            player.courtierFavors++;
+            result = true;
+        }
+        else if (action.Equals("nobility") && player.Gold >= VVC.nobilityFavorBasePrice)
+        {
+            player.Gold -= VVC.nobilityFavorBasePrice;
+            player.nobilityFavors++;
+            result = true;
+        }
+        else if (action.Equals("royal") && player.Gold >= VVC.royalFavorBasePrice)
+        {
+            player.Gold -= VVC.royalFavorBasePrice;
+            player.royalFavors++;
+            result = true;
+        }
+
+        RefreshUI();
+        return result;
+    }
+
+    public bool TellTales()
+    {
+        //calculate the total rating of the stories
+        int totalRating = 0;
+        int royal = VVC.royalTalesRating;
+        int nobility = VVC.nobilityTalesRating;
+        int courtier = VVC.courtierTalesRating; 
+
+        for(int  i= 0; i < finnishedQuests.Count; i++)
+        {
+            if(!finnishedQuests[i].TaleTold)
+            {
+                totalRating += finnishedQuests[i].Rating;
+                finnishedQuests[i].TaleTold = true;
+            }
+        }
+
+        while(totalRating > 0)
+        {
+            //calculate the favors gained after telling this story
+            if (totalRating >= royal && Random.Range(1, 5) >= 4) // 25% change to gain a royal favor when having a rating big enough
+            {
+                player.royalFavors++;
+                totalRating -= royal;
+            }
+            if (totalRating >= nobility && Random.Range(1, 5) >= 3) // 50% change to gain a nobility favor when having a rating big enough
+            {
+                player.nobilityFavors++;
+                totalRating -= nobility;
+            }
+            if (totalRating >= royal && Random.Range(1, 5) >= 2) // 75% change to gain a courtier favor when having a rating big enough
+            {
+                player.courtierFavors++;
+                totalRating -= courtier;
+            }
+
+            totalRating--;
+        }
+
+        RefreshUI();
+        return true;
+    }
 
     public bool ConfigureAdventure(Quest quest, Vector3 questPos)
     {
@@ -316,7 +396,6 @@ public class GameManager : MonoBehaviour
         adventure.GetComponent<AdventureScreen>().ConfigureScreen(quest, questPos);
         return true;
     }
-
     public void StartAdventure(List<Adventurer> party, Quest quest, Vector3 questPos,int supplyLevel, int supplyCost)
     {
         if (player.Supply >= supplyCost)
@@ -333,18 +412,21 @@ public class GameManager : MonoBehaviour
             print("not enough supply");
         }
     }
-
     public void EndAdventure(List<Adventurer> returningParty, int reward, Quest quest)
     {
         if (reward == -1)
         {
             print("QUEST WAS FAILED");
             CalculateQuestXPReward(returningParty, quest, false);
+
+            finnishedQuests.Add(new FinnishedQuest(quest, returningParty, false));
         }
         else
         {
             player.Gold += reward;
             CalculateQuestXPReward(returningParty, quest, true);
+
+            finnishedQuests.Add(new FinnishedQuest(quest, returningParty, true));
         }
 
 
@@ -357,7 +439,6 @@ public class GameManager : MonoBehaviour
         CalculateDailySupplyCost();
         RefreshUI();
     }
-
     private void CalculateQuestXPReward(List<Adventurer> advs, Quest quest, bool isSuccsessfull)
     {
         //TO DO: make it scale down with level.
@@ -400,7 +481,6 @@ public class GameManager : MonoBehaviour
             return true;
         return false;
     }
-
     public bool PayGold(int amount)
     {
         if (player.Gold >= amount)

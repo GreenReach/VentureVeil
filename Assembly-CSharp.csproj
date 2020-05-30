@@ -63,8 +63,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\API\AdventurerAPI.cs" />
+    <Compile Include="Assets\Scripts\API\FinnishedQuestAPI.cs" />
     <Compile Include="Assets\Scripts\API\GetInstance.cs" />
     <Compile Include="Assets\Scripts\API\PlayerAPI.cs" />
+    <Compile Include="Assets\Scripts\API\ProfilesAPI.cs" />
     <Compile Include="Assets\Scripts\API\QuestAPI.cs" />
     <Compile Include="Assets\Scripts\API\VentureVeilStructures.cs" />
     <Compile Include="Assets\Scripts\AdventurerParty\AdventurerParty.cs" />
@@ -83,11 +85,19 @@
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\Guild\Guild.cs" />
     <Compile Include="Assets\Scripts\Guild\UI\GuildMenuUI.cs" />
+    <Compile Include="Assets\Scripts\Guild\UI\QuestRecords\QuestRecord.cs" />
+    <Compile Include="Assets\Scripts\Guild\UI\QuestRecords\QuestRecords.cs" />
     <Compile Include="Assets\Scripts\Guild\UI\Rooms\RoomScript.cs" />
     <Compile Include="Assets\Scripts\Guild\UI\Rooms\Rooms.cs" />
     <Compile Include="Assets\Scripts\Guild\UI\Show Adventurers\AdventurerInfoPanel.cs" />
     <Compile Include="Assets\Scripts\Guild\UI\Show Adventurers\ShowAdventurers.cs" />
     <Compile Include="Assets\Scripts\ManageRoad.cs" />
+    <Compile Include="Assets\Scripts\Menu\MainMenu\MainMenu.cs" />
+    <Compile Include="Assets\Scripts\Menu\MenuManager.cs" />
+    <Compile Include="Assets\Scripts\Menu\New Game\NewGame.cs" />
+    <Compile Include="Assets\Scripts\Menu\NewProfile\NewProfile.cs" />
+    <Compile Include="Assets\Scripts\Menu\SelectProfile\ProfileButton.cs" />
+    <Compile Include="Assets\Scripts\Menu\SelectProfile\SelectProfile.cs" />
     <Compile Include="Assets\Scripts\Quest\AdventureScreen.cs" />
     <Compile Include="Assets\Scripts\Quest\ChooseAdventurerScreen.cs" />
     <Compile Include="Assets\Scripts\Quest\ConfigureAdventurerSelectPanel.cs" />
@@ -133,16 +143,19 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\WarpTextExample.cs" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
-    <None Include="Assets\Data\Adventurers.xml" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Overlay.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap.shader" />
     <None Include="Assets\Imports\PROCJAM2017-DevilsGarage\2D_v01.0.0\View-Top\sprites\sprites.txt" />
     <None Include="Assets\TextMesh Pro\Examples &amp; Extras\Fonts\Oswald-Bold - OFL.txt" />
     <None Include="Assets\TextMesh Pro\Examples &amp; Extras\Fonts\Anton OFL.txt" />
+    <None Include="Assets\Data\ProfilesData\altceva\Adventurers.xml" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface-Mobile.shader" />
-    <None Include="Assets\Data\PlayerInfo.xml" />
+    <None Include="Assets\Data\Profiles.xml" />
+    <None Include="Assets\Data\ProfilesData\altceva\PlayerInfo.xml" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface.shader" />
+    <None Include="Assets\Data\ProfilesData\GreenReach\PlayerInfo.xml" />
     <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
+    <None Include="Assets\Data\ProfilesData\GreenReach\FinnishedQuests.xml" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF.shader" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
@@ -152,11 +165,14 @@
     <None Include="Assets\Data\QuestData.xml" />
     <None Include="Assets\Imports\PROCJAM2017-DevilsGarage\ReadMe.txt" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
+    <None Include="Assets\Data\ProfilesData\altceva\FinnishedQuests.xml" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Masking.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF Overlay.shader" />
     <None Include="Assets\Imports\PROCJAM2017-DevilsGarage\2D_v01.0.0\View-Front\sprite-wall\sprites.txt" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Mobile.shader" />
     <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
+    <None Include="Assets\Data\ProfilesData\GreenReach\Adventurers.xml" />
+    <None Include="Assets\Data\ProfilesData\ceva\PlayerInfo.xml" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Sprite.shader" />
     <None Include="Assets\TextMesh Pro\Examples &amp; Extras\Fonts\Bangers - OFL.txt" />

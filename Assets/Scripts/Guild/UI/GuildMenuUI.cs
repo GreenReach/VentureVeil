@@ -9,9 +9,12 @@ public class GuildMenuUI : MonoBehaviour
     public Button closeButton;
     public Button showAdventurersButton;
     public Button roomsButton;
+    public Button questRecordsButton;
+
     public GameObject guildPanel;
     public GameObject roomsPanel;
     public GameObject showAdventurers;
+    public GameObject questRecords;
 
     private GameObject currentPanel;
     private GetInstance getInstance;
@@ -24,6 +27,7 @@ public class GuildMenuUI : MonoBehaviour
         closeButton.onClick.AddListener(Close);
         showAdventurersButton.onClick.AddListener(ShowAdventurersScreen);
         roomsButton.onClick.AddListener(RoomsScreen);
+        questRecordsButton.onClick.AddListener(QuestRecords);
     }
 
     void ShowAdventurersScreen()
@@ -34,11 +38,15 @@ public class GuildMenuUI : MonoBehaviour
 
     void RoomsScreen()
     {
-        print("DA");
         Destroy(currentPanel);
         currentPanel = Instantiate(roomsPanel, guildPanel.transform);
     }
 
+    void QuestRecords()
+    {
+        Destroy(currentPanel);
+        currentPanel = Instantiate(questRecords, guildPanel.transform);
+    }
 
     void Close()
     {

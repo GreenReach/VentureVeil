@@ -9,6 +9,7 @@ public class GetInstance : MonoBehaviour
     public AdventurerAPI AdventurerAPI { get; private set; }
     public QuestAPI QuestAPI { get; private set; }
     public PlayerAPI PlayerAPI { get; private set; }
+    public FinnishedQuestAPI FinnishedQuestAPI { get; private set; }
     public GameObject Guild { get; set; }
     public GameObject UICanvas { get; set; }
 
@@ -23,5 +24,6 @@ public class GetInstance : MonoBehaviour
         AdventurerAPI = GameObject.Find(scriptsObj).GetComponent<AdventurerAPI>();
         QuestAPI = GameObject.Find(scriptsObj).GetComponent<QuestAPI>();
         PlayerAPI = GameObject.Find(scriptsObj).GetComponent<PlayerAPI>();
+        FinnishedQuestAPI = GameObject.Find(scriptsObj).GetComponent<FinnishedQuestAPI>();
     }
 }

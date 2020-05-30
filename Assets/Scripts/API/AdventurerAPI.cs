@@ -12,15 +12,21 @@ public class AdventurerAPI : MonoBehaviour
     private int[] staminaProbabilities = { 0, 0, 40, 30, 20, 10 };
     public List<Adventurer> getAdventurers() { return adventurers; }
 
-    public void LoadAdventurers()
+    public void LoadAdventurers(string username)
     {
-        LoadFromXML();
+        LoadFromXML(username);
     }
 
-    private void LoadFromXML()
+    public void CreateAdventurersFile(Profile p)
     {
+        CreateXML(p);
+    }
+
+    private void LoadFromXML(string username)
+    {
+        string filepath = VVC.playerInfoPath + username;
         XmlDocument doc = new XmlDocument();
-        doc.Load("Assets/Data/Adventurers.xml");
+        doc.Load(filepath + "/Adventurers.xml");
         XmlNodeList nodeList = doc.SelectNodes("/Adventurers/Adventurer");
         adventurers = new List<Adventurer>();
 
@@ -30,20 +36,32 @@ public class AdventurerAPI : MonoBehaviour
         {
             Adventurer adv = new Adventurer();
 
-            adv.FirstName = node.SelectSingleNode("FIRSTNAME").InnerText;
-            adv.LastName = node.SelectSingleNode("LASTNAME").InnerText;
-            adv.Gender = node.SelectSingleNode("GENDER").InnerText;
-            adv.Hp = int.Parse(node.SelectSingleNode("HP").InnerText);
-            adv.Stamina = int.Parse(node.SelectSingleNode("STAMINA").InnerText);
-            adv.Strength = int.Parse(node.SelectSingleNode("STRENGTH").InnerText);
-            adv.Agility = int.Parse(node.SelectSingleNode("AGILITY").InnerText);
-            adv.Intelligence = int.Parse(node.SelectSingleNode("INTELLIGENCE").InnerText);
-            adv.StrengthXP = int.Parse(node.SelectSingleNode("STRENGTHXP").InnerText);
-            adv.AgilityXP = int.Parse(node.SelectSingleNode("AGILITYXP").InnerText);
-            adv.IntelligenceXP = int.Parse(node.SelectSingleNode("INTELLIGENCEXP").InnerText);
+            adv.FirstName = node.SelectSingleNode("FirstName").InnerText;
+            adv.LastName = node.SelectSingleNode("LastName").InnerText;
+            adv.Gender = node.SelectSingleNode("Gender").InnerText;
+            adv.Hp = int.Parse(node.SelectSingleNode("Hp").InnerText);
+            adv.Stamina = int.Parse(node.SelectSingleNode("Stamina").InnerText);
+            adv.Strength = int.Parse(node.SelectSingleNode("Strength").InnerText);
+            adv.Agility = int.Parse(node.SelectSingleNode("Agility").InnerText);
+            adv.Intelligence = int.Parse(node.SelectSingleNode("Intelligence").InnerText);
+            adv.StrengthXP = int.Parse(node.SelectSingleNode("StrengthXP").InnerText);
+            adv.AgilityXP = int.Parse(node.SelectSingleNode("AgilityXP").InnerText);
+            adv.IntelligenceXP = int.Parse(node.SelectSingleNode("IntelligenceXP").InnerText);
             adventurers.Add(adv);
 
         }
+    }
+
+    private void CreateXML(Profile p)
+    {
+        XmlDocument doc = new XmlDocument();
+        XmlNode declaration = doc.CreateXmlDeclaration("1.0", "UTF-8", null);
+        doc.AppendChild(declaration);
+
+        XmlNode root = doc.CreateElement("Adventurers");
+       
+        doc.AppendChild(root);
+        doc.Save("Assets/Data/ProfilesData/" + p.Username + "/Adventurers.xml");
     }
 
     private int CalculateStat(int[] probabilities)

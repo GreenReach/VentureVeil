@@ -98,6 +98,11 @@ namespace VentureVeilStructures
         public int RequiredINT { get; set; }
         public int Slots { get; set; }
 
+        public Quest()
+        {
+       
+        }
+
         public Quest(string dsc, int STA, int STR, int AGY, int INT, int rwd, int slots, int diff)
         {
             Description = string.Copy(dsc);
@@ -111,6 +116,28 @@ namespace VentureVeilStructures
         }
     }
 
+    public class FinnishedQuest
+    {
+        public Quest Quest { get; set; }
+        public List<Adventurer> Party { get; set; }
+        public bool Successfull { get; set; }
+        public int Rating { get; set; }
+        public bool TaleTold { get; set; }
+
+        public FinnishedQuest()
+        {
+        }
+
+        public FinnishedQuest(Quest q, List<Adventurer> advs, bool s)
+        {
+            Quest = q;
+            Party = advs;
+            Successfull = s;
+            TaleTold = false;
+        }
+
+    }
+
     public class Player
     {
         public string Username { get; set; }
@@ -118,11 +145,15 @@ namespace VentureVeilStructures
         public int Supply { get; set; }
         public int NumberOfRooms { get; set; }
         public List<Room> Rooms { get; set; } //Room Type and its level
+        public int courtierFavors { get; set; }
+        public int nobilityFavors { get; set; }
+        public int royalFavors { get; set; }
+
+        //calculated
         public int adventurersLimit { get; set; }
         public int passiveStrengthGain { get; set; }
         public int passiveAgilityGain { get; set; }
         public int passiveIntelligenceGain { get; set; }
-
 
     }
 
@@ -138,6 +169,23 @@ namespace VentureVeilStructures
         public int Level { get; set; }
     }
 
+    public class Profile
+    {
+        public string Username { get; set; }
+
+        public Profile(string user)
+        {
+            Username = user;
+        }
+
+        public bool Equals(Profile p)
+        {
+            if (Username.Equals(p.Username))
+                return true;
+            return false;
+        }
+
+    }
 
     public enum MouseModes
     {
@@ -150,5 +198,25 @@ namespace VentureVeilStructures
         public static int buildPrice = 100;
         public static int upgradeLevelPrice = 50;
         public static int upgradeBasePrice = 50;
+        public static int courtierFavorBasePrice = 600;
+        public static int nobilityFavorBasePrice = 800;
+        public static int royalFavorBasePrice = 1000;
+        public static int courtierTalesRating = 20;
+        public static int nobilityTalesRating = 30;
+        public static int royalTalesRating = 40 ;
+
+        //default values when loading
+        public static int defaultGold = 100;
+        public static int defaultSupply = 20;
+        public static int defaultNumberOfRooms = 4;
+
+        //Filepaths
+        public static string userDataDirPath = "Assets\\Data\\ProfilesData\\"; // used for creating the folder
+        public static string playerInfoPath = "Assets/Data/ProfilesData/"; // used to load/save
+
+        //New game Prices
+        public static int[] durationPrices = { 0,6,12,100 }; // 100Days, 200Days, 1 Year, unlimited prices
+        public static int goldIncrement = 50;
+        public static int goldIncrementCost = 1;
     }
 }

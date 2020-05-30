@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using VentureVeilStructures;
 
 public class CastleButton : MonoBehaviour
 {
@@ -11,18 +12,17 @@ public class CastleButton : MonoBehaviour
 
     private SpriteRenderer spriteRenderer;
     private TextMeshPro buttonText;
-
     // Start is called before the first frame update
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         buttonText = GetComponentInChildren<TextMeshPro>();
         if (buttonAction.Equals("royal"))
-            buttonText.text = "Price/n 1000 GOLD";
+            buttonText.text = "Price/n" + VVC.royalFavorBasePrice + " GOLD";
         else if(buttonAction.Equals("nobility"))
-            buttonText.text = "Price/n 800 GOLD";
+            buttonText.text = "Price/n" + VVC.nobilityFavorBasePrice + " GOLD";
         else if (buttonAction.Equals("courtier"))
-            buttonText.text = "Price/n 600 GOLD";
+            buttonText.text = "Price/n" + VVC.courtierFavorBasePrice + " GOLD";
         else if (buttonAction.Equals("tale"))
             buttonText.text = "Tell Tales";
 

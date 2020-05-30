@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Player>
+  <Username>ceva</Username>
+  <Gold>100</Gold>
+  <Supply>20</Supply>
+  <NumberOfRooms>4</NumberOfRooms>
+  <RoomType>1 1 0 0 0 0 0 0</RoomType>
+  <CourtierFavors>0</CourtierFavors>
+  <NobilityFavors>0</NobilityFavors>
+  <RoyalFavors>0</RoyalFavors>
+</Player>

@@ -76,7 +76,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Button
+  m_Text: Quest Records
 --- !u!1 &116837824433388930
 GameObject:
   m_ObjectHideFlags: 0
@@ -106,8 +106,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 3522939931730156896}
   - {fileID: 4803806876613015411}
+  - {fileID: 3522939931730156896}
   m_Father: {fileID: 3639747383876235527}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -244,7 +244,7 @@ GameObject:
   - component: {fileID: 5596408547204496431}
   - component: {fileID: 1838669768317481689}
   m_Layer: 0
-  m_Name: Button
+  m_Name: QuestRecords
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -457,7 +457,7 @@ Transform:
   - {fileID: 3369040159817256938}
   - {fileID: 8952423182402697900}
   m_Father: {fileID: 4381038543809788767}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2929945753273465483
 GameObject:
@@ -810,10 +810,13 @@ MonoBehaviour:
   closeButton: {fileID: 613040645447935853}
   showAdventurersButton: {fileID: 4060852214659967637}
   roomsButton: {fileID: 961370031753749452}
+  questRecordsButton: {fileID: 1838669768317481689}
   guildPanel: {fileID: 116837824433388930}
   roomsPanel: {fileID: 3126872099470397880, guid: d7444c5d1aee0dd4f8c3cacee585ad91,
     type: 3}
   showAdventurers: {fileID: 7922060849731554308, guid: aee18d7279bf5c944b809706b0b1306c,
+    type: 3}
+  questRecords: {fileID: 8732007746613590504, guid: cddb019196f8d8e45989ca88d19b48f7,
     type: 3}
 --- !u!1 &4249176621345973435
 GameObject:
@@ -847,7 +850,7 @@ RectTransform:
   m_Children:
   - {fileID: 8399820718699859456}
   m_Father: {fileID: 4381038543809788767}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
