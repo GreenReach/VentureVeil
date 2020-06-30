@@ -1,11 +1,17 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <Player>
   <Username>GreenReach</Username>
-  <Gold>5000</Gold>
-  <Supply>1000</Supply>
-  <NumberOfRooms>5</NumberOfRooms>
-  <RoomType>1 1 0 0 0 0 0 0 0 0</RoomType>
-  <CourtierFavors>2</CourtierFavors>
-  <NobilityFavors>1</NobilityFavors>
-  <RoyalFavors>0</RoyalFavors>
+  <Gold>10000</Gold>
+  <Supply>2000</Supply>
+  <NumberOfRooms>4</NumberOfRooms>
+  <RoomType>1 1 0 0 0 0 0 0</RoomType>
+  <CourtierFavors>69</CourtierFavors>
+  <NobilityFavors>95</NobilityFavors>
+  <RoyalFavors>94</RoyalFavors>
+  <Unlocks>True True False False False </Unlocks>
+  <GuildLocation>23,06169 1,06428 2,924084</GuildLocation>
+  <Kingdom>3</Kingdom>
+  <Day>3</Day>
+  <Hour>2</Hour>
+  <GameDuration>100</GameDuration>
 </Player>

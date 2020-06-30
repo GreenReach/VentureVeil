@@ -139,5 +139,4 @@ public class WanderingAdventurer : MonoBehaviour
     {
         isPaused = false;
     }
-    
 }

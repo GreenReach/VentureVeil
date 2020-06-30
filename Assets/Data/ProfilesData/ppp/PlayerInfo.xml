@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Player>
+  <Username>ppp</Username>
+  <Gold>100</Gold>
+  <Supply>20</Supply>
+  <NumberOfRooms>4</NumberOfRooms>
+  <RoomType>1 1 0 0 0 0 0 0</RoomType>
+  <CourtierFavors>57</CourtierFavors>
+  <NobilityFavors>47</NobilityFavors>
+  <RoyalFavors>47</RoyalFavors>
+  <Unlocks>True True False False False </Unlocks>
+  <GuildLocation>0 0 0</GuildLocation>
+  <Kingdom>0</Kingdom>
+  <Day>-1</Day>
+  <Hour>-1</Hour>
+  <GameDuration>0</GameDuration>
+</Player>

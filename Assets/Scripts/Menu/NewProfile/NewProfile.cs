@@ -9,12 +9,22 @@ public class NewProfile : MonoBehaviour
 
     public Button confirmButton;
     public InputField input;
+    public GameObject errorMessage;
 
     private ProfilesAPI profilesAPI;
     private PlayerAPI playerAPI;
     private AdventurerAPI adventurerAPI;
     private FinnishedQuestAPI finnishedQuestAPI;
+
     private MenuManager menuManager;
+
+    private void Update()
+    {
+        if(input.isFocused && Input.anyKeyDown)
+        {
+            GameObject.Find("MenuUI").GetComponent<SoundManager>().Play("writing");
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -30,6 +40,7 @@ public class NewProfile : MonoBehaviour
 
     void CreateUser()
     {
+        GameObject.Find("MenuUI").GetComponent<SoundManager>().Play("button");
         Profile newProfile = new Profile(input.text);
         if (profilesAPI.SaveProfile(newProfile))
         {
@@ -39,6 +50,10 @@ public class NewProfile : MonoBehaviour
             finnishedQuestAPI.CreateFinnishedQuestFile(newProfile);
 
             menuManager.ChangeScreen("ProfileCreated");
+        }
+        else
+        {
+            errorMessage.SetActive(true);
         }
     }
 }

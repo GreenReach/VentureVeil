@@ -15,13 +15,13 @@ public class BuilderBuyButton : MonoBehaviour
     }
     private void OnMouseEnter()
     {
-     //   myObj.sprite = hoverButton;
+        myObj.sprite = hoverButton;
         builder.Pause();
     }
 
     private void OnMouseExit()
     {
-     //   myObj.sprite = defaultButton;
+        myObj.sprite = defaultButton;
         builder.Unpause();
     }
 

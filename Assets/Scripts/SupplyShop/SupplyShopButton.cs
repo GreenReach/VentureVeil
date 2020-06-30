@@ -12,15 +12,18 @@ public class SupplyShopButton : MonoBehaviour
 
     private void Start()
     {
+        objectSprite = gameObject.GetComponent<SpriteRenderer>();
         supplyShopPanel = gameObject.GetComponentInParent<SupplyShopPanel>();
     }
 
     private void OnMouseEnter()
     {
+        objectSprite.sprite = hoverSprite;
     }
 
     private void OnMouseExit()
     {
+        objectSprite.sprite = defaultSprite;
     }
 
     private void OnMouseDown()

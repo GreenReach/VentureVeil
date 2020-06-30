@@ -10,6 +10,7 @@ public class MenuManager : MonoBehaviour
     public GameObject profileSelect;
     public GameObject NewProfile;
     public GameObject newGame;
+    public GameObject exchangeFavors;
 
     //API
     private PlayerAPI playerAPI;
@@ -19,14 +20,35 @@ public class MenuManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        mainMenu.SetActive(false);
+        profileSelect.SetActive(false);
+        NewProfile.SetActive(false);
+        newGame.SetActive(false);
+        exchangeFavors.SetActive(false);
+
         playerAPI = GetComponent<PlayerAPI>();
         profilesAPI = GetComponent<ProfilesAPI>();
 
         LoadFromAPI();
 
         //After it is loaded start the first screen
-       profileSelect.SetActive(true);
-
+        if (PlayerPrefs.HasKey("ReturningFromGame") && PlayerPrefs.GetInt("ReturningFromGame") == 1)
+        {
+            string user = PlayerPrefs.GetString("Username");
+            List<Profile> profiles = profilesAPI.Profiles;
+            for (int i = 0; i < profiles.Count; i++)
+            {
+                if (profiles[i].Username.Equals(user))
+                {
+                    ChangeScreen("ProfileSelected", profiles[i]);
+                    PlayerPrefs.SetInt("ReturningFromGame",0);
+                }
+            }
+        }
+        else
+        {
+            profileSelect.SetActive(true);
+        }
     }
 
     void LoadFromAPI()
@@ -75,6 +97,20 @@ public class MenuManager : MonoBehaviour
         else if(action.Equals("ReturnFromNewGame"))
         {
             newGame.SetActive(false);
+            mainMenu.SetActive(true);
+        }
+        else if(action.Equals("GoToExchangeFavors"))
+        {
+            Player player = mainMenu.GetComponent<MainMenu>().Player;
+
+            mainMenu.SetActive(false);
+            exchangeFavors.SetActive(true);
+
+            exchangeFavors.GetComponent<ExchangeFavors>().Configure(player, this);
+        }
+        else if(action.Equals("ReturnFromExchangeFavors"))
+        {
+            exchangeFavors.SetActive(false);
             mainMenu.SetActive(true);
         }
     }

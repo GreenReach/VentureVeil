@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 5091d440649d3b24e87eaf980c861e06
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - source: {instanceID: 0}
+  - button: {fileID: 8300000, guid: 581a674db581a874297ee29b4bd9238d, type: 3}
+  - writing: {fileID: 8300000, guid: 349233e76f653f34ca9f399d0acc0bed, type: 3}
+  - doorbell: {fileID: 8300000, guid: 581a674db581a874297ee29b4bd9238d, type: 3}
+  - doorClose: {fileID: 8300000, guid: db4fc0ed53c1ad140977033d1901275b, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

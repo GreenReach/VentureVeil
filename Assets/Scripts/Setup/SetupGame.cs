@@ -14,6 +14,14 @@ public class SetupGame : MonoBehaviour
     {
         guild = Instantiate(GuildPrefab, Input.mousePosition, Quaternion.identity);
         getInstance = GameObject.Find("GameManager").GetComponent<GetInstance>();
+
+        if (PlayerPrefs.GetInt("Resume") == 1)
+        {
+            getInstance.Guild = guild;
+            gameManager.enabled = true;
+            gameManager.guild = guild;
+            Destroy(this);
+        }
     }
 
     void Update()

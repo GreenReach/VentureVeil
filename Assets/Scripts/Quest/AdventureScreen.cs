@@ -13,8 +13,8 @@ public class AdventureScreen : MonoBehaviour
     public List<GameObject> slots; // all AdventureSlots
 
     //UI 
-    public Text adventureDescription;
-    public Button startButton, lowSupply, mediumSupply, highSupply;
+    public Text adventureDescription, STAReq, STRReq, AGYReq, INTReq, reward ;
+    public Button startButton, lowSupply, mediumSupply, highSupply, close;
 
     //VVS (venture veil structures)
     private GetInstance getInstance;
@@ -27,6 +27,7 @@ public class AdventureScreen : MonoBehaviour
     private Vector3 questPos; // quest location
     private int lowSupplyCost, mediumSupplyCost, highSupplyCost, supplyLevel, finalSupplyCost;
     private float distance; // distance to quest;
+    private GameObject questSign; // to be destroyed if the quest starts
 
     private void Start()
     {
@@ -43,18 +44,25 @@ public class AdventureScreen : MonoBehaviour
         lowSupply.onClick.AddListener(delegate { ChangeSupplyLevel(-1); });
         mediumSupply.onClick.AddListener(delegate { ChangeSupplyLevel(1); });
         highSupply.onClick.AddListener(delegate { ChangeSupplyLevel(2); });
+        close.onClick.AddListener(Close);
 
         CalculateSupplyCost();
         supplyLevel = -1;
         finalSupplyCost = lowSupplyCost;
     }
 
-    public void ConfigureScreen(Quest q, Vector3 questLocation)
+    public void ConfigureScreen(Quest q, Vector3 questLocation, GameObject questS)
     {
         quest = q;
         questPos = questLocation;
+        questSign = questS;
 
-        adventureDescription.text = q.Description + "\n" +"STR:" + q.RequiredSTR + " AGY:" + q.RequiredAGY + " INT:" + q.RequiredINT + "STA: " + q.RequiredSTA + "\n Reward " + q.Reward;
+        adventureDescription.text = q.Description;
+        STAReq.text = q.RequiredSTA.ToString();
+        STRReq.text = q.RequiredSTR.ToString();
+        AGYReq.text = q.RequiredAGY.ToString();
+        INTReq.text = q.RequiredINT.ToString(); 
+       
 
         for (int i = 0; i < quest.Slots; i++)
         {
@@ -134,10 +142,9 @@ public class AdventureScreen : MonoBehaviour
             highSupplyCost = baseSupplyCost + baseSupplyCost / 2;
         }
 
-        lowSupply.GetComponentInChildren<Text>().text = "Low supply cost " + lowSupplyCost;
-        mediumSupply.GetComponentInChildren<Text>().text = "Medium supply cost " + mediumSupplyCost;
-        highSupply.GetComponentInChildren<Text>().text = "High supply cost " + highSupplyCost;
-
+        lowSupply.GetComponentInChildren<Text>().text = "Low supply - " + lowSupplyCost;
+        mediumSupply.GetComponentInChildren<Text>().text = "Medium supply - " + mediumSupplyCost;
+        highSupply.GetComponentInChildren<Text>().text = "High supply - " + highSupplyCost;
 
     }
 
@@ -158,7 +165,7 @@ public class AdventureScreen : MonoBehaviour
         {
             currentSlot = UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject.gameObject; // get the game object that was pressed
             GameObject panel = Instantiate(ChooseAdventurerPanel, new Vector3(0, 0, 0), Quaternion.identity);
-            panel.GetComponent<ChooseAdventurerScreen>().SetScript(this); 
+            panel.GetComponent<ChooseAdventurerScreen>().Configure(this,quest); 
             panel.GetComponent<ChooseAdventurerScreen>().PopulateTab();
         }
     }
@@ -168,7 +175,12 @@ public class AdventureScreen : MonoBehaviour
         getInstance.GameManager.StartAdventure(chosenAdventurers, quest, questPos, supplyLevel, finalSupplyCost);
 
         getInstance.GameManager.ChangeMouseMode(MouseModes.WORLD);
+        Destroy(questSign);
         Destroy(gameObject);
     }
 
+    void Close()
+    {
+        Destroy(gameObject);
+    }
 }

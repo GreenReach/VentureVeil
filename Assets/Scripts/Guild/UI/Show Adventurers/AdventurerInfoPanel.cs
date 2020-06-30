@@ -24,7 +24,7 @@ public class AdventurerInfoPanel : MonoBehaviour
         adventurer = adv;
         Name.text = adventurer.FirstName + " " + adventurer.LastName;
         Health.text = adventurer.Hp.ToString();
-        Stamina.text = adventurer.Stamina.ToString();
+        Stamina.text = adventurer.CurrentStamina.ToString() + '/' +  adventurer.Stamina.ToString();
         Strenght.text = adventurer.Strength.ToString();
         Agility.text = adventurer.Agility.ToString();
         Intelligence.text = adventurer.Intelligence.ToString();

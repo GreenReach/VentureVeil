@@ -68,6 +68,7 @@ public class SelectProfile : MonoBehaviour
 
     void NewProfile()
     {
+        GameObject.Find("MenuUI").GetComponent<SoundManager>().Play("button");
         menuManager.ChangeScreen("NewProfile");
     }
 

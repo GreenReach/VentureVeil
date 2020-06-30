@@ -11,7 +11,7 @@ public class ChooseAdventurerScreen : MonoBehaviour
 
     private AdventureScreen adventureScreen;
     private List<Adventurer> adventurers; //list from AdventureScreen with all the players not chosen adventurers
-
+    private Quest quest;
 
     public void PopulateTab()
     {
@@ -20,14 +20,14 @@ public class ChooseAdventurerScreen : MonoBehaviour
         {
             GameObject advSelectPanel = Instantiate(adventurerSelectPanel, new Vector3(0, 0, 0), Quaternion.identity);
             advSelectPanel.GetComponent<ConfigureAdventurerSelectPanel>().ConfigureInfo(adventurers[i]);
-            advSelectPanel.GetComponent<ConfigureAdventurerSelectPanel>().SetScript(this);
+            advSelectPanel.GetComponent<ConfigureAdventurerSelectPanel>().Configure(this,quest);
             advSelectPanel.transform.SetParent(adventurerListContent.transform);
         }
 
         //Add empty panel 
         GameObject emptyPanel = Instantiate(adventurerSelectPanel, new Vector3(0, 0, 0), Quaternion.identity);
         emptyPanel.GetComponent<ConfigureAdventurerSelectPanel>().ConfigureEmpty();
-        emptyPanel.GetComponent<ConfigureAdventurerSelectPanel>().SetScript(this);
+        emptyPanel.GetComponent<ConfigureAdventurerSelectPanel>().Configure(this,quest);
         emptyPanel.transform.SetParent(adventurerListContent.transform);
     }
 
@@ -42,9 +42,10 @@ public class ChooseAdventurerScreen : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void SetScript(AdventureScreen script)
+    public void Configure(AdventureScreen script, Quest q)
     {
         adventureScreen = script;
+        quest = q;
     }
 
 

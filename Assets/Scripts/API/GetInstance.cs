@@ -10,6 +10,7 @@ public class GetInstance : MonoBehaviour
     public QuestAPI QuestAPI { get; private set; }
     public PlayerAPI PlayerAPI { get; private set; }
     public FinnishedQuestAPI FinnishedQuestAPI { get; private set; }
+    public SoundManager SoundManager { get; private set; }
     public GameObject Guild { get; set; }
     public GameObject UICanvas { get; set; }
 
@@ -25,5 +26,6 @@ public class GetInstance : MonoBehaviour
         QuestAPI = GameObject.Find(scriptsObj).GetComponent<QuestAPI>();
         PlayerAPI = GameObject.Find(scriptsObj).GetComponent<PlayerAPI>();
         FinnishedQuestAPI = GameObject.Find(scriptsObj).GetComponent<FinnishedQuestAPI>();
+        SoundManager = GameObject.Find(scriptsObj).GetComponent<SoundManager>();
     }
 }

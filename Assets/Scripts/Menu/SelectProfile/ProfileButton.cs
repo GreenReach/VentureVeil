@@ -17,7 +17,10 @@ public class ProfileButton : MonoBehaviour
         selectProfile = sp;
 
         text.text = profile.Username;
-        button.onClick.AddListener(delegate { selectProfile.ProfileSelect(profile); });
+        button.onClick.AddListener(delegate {
+            GameObject.Find("MenuUI").GetComponent<SoundManager>().Play("button");
+            selectProfile.ProfileSelect(profile);
+        });
 
     }
 }

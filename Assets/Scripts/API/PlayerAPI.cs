@@ -15,6 +15,9 @@ public class PlayerAPI : MonoBehaviour
     {
         Player = new Player();
         LoadFromXML(username);
+        
+        CalculateUnlocks();
+        ApplyUnlocks();
     }
 
     public void CreatePlayer(Profile p)
@@ -44,6 +47,15 @@ public class PlayerAPI : MonoBehaviour
         Player.Supply = int.Parse(node.SelectSingleNode("Supply").InnerText);
         Player.NumberOfRooms = int.Parse(node.SelectSingleNode("NumberOfRooms").InnerText);
         Player.adventurersLimit = 2; // default value;
+
+        //Guild Location 
+        if (node.SelectSingleNode("GuildLocation").InnerText != "0")
+        {
+            string[] pos = node.SelectSingleNode("GuildLocation").InnerText.Split(' ');
+            Player.guildLocation = new Vector3(float.Parse(pos[0]), float.Parse(pos[1]), float.Parse(pos[2]));
+        }
+
+        //RoomType
         string[] roomTypesStr = node.SelectSingleNode("RoomType").InnerText.Split(' ');
         List<Room> rooms = new List<Room>();
         for (int i = 0; i < roomTypesStr.Length; i += 2)
@@ -55,15 +67,23 @@ public class PlayerAPI : MonoBehaviour
                 Player.adventurersLimit +=room.Level + 1; // calculte the limit like so: first level is 2 adv, the next ones are one adv per level
         }
 
+        //Unlocks
+        string[] unlocks = node.SelectSingleNode("Unlocks").InnerText.Split(' ');
+        for(int i = 0; i< VVC.unlocksNumber; i++ )
+            Player.Unlocks[i] = bool.Parse(unlocks[i]);
+
         Player.courtierFavors = int.Parse(node.SelectSingleNode("CourtierFavors").InnerText);
         Player.nobilityFavors = int.Parse(node.SelectSingleNode("NobilityFavors").InnerText);
         Player.royalFavors = int.Parse(node.SelectSingleNode("RoyalFavors").InnerText);
-
+        Player.kingdom = int.Parse(node.SelectSingleNode("Kingdom").InnerText);
+        Player.currentDay = int.Parse(node.SelectSingleNode("Day").InnerText);
+        Player.currentHour = int.Parse(node.SelectSingleNode("Hour").InnerText);
+        Player.currentGameDuration = int.Parse(node.SelectSingleNode("GameDuration").InnerText);
 
         Player.Rooms = rooms;
+        UpdateRooms();
 
     }
-
     private void CreateXML(Profile p)
     {
         XmlDocument doc = new XmlDocument();
@@ -96,6 +116,26 @@ public class PlayerAPI : MonoBehaviour
         XmlNode royalFavors = doc.CreateElement("RoyalFavors");
         royalFavors.InnerText = "0";
 
+        XmlNode unlocks = doc.CreateElement("Unlocks");
+        unlocks.InnerText = "";
+        for(int i = 0; i<VVC.unlocksNumber; i++)
+            unlocks.InnerText += "False ";
+
+        XmlNode guildLoc = doc.CreateElement("GuildLocation");
+        guildLoc.InnerText = "0";
+
+        XmlNode kingdom = doc.CreateElement("Kingdom");
+        kingdom.InnerText = "0";
+
+        XmlNode day = doc.CreateElement("Day");
+        day.InnerText = "-1";
+
+        XmlNode hour = doc.CreateElement("Hour");
+        hour.InnerText = "-1";
+
+        XmlNode gameDuration = doc.CreateElement("GameDuration");
+        gameDuration.InnerText = "0";
+
         root.AppendChild(user);
         root.AppendChild(gold);
         root.AppendChild(supply);
@@ -104,6 +144,12 @@ public class PlayerAPI : MonoBehaviour
         root.AppendChild(courtierFavors);
         root.AppendChild(nobilityFavors);
         root.AppendChild(royalFavors);
+        root.AppendChild(unlocks);
+        root.AppendChild(guildLoc);
+        root.AppendChild(kingdom);
+        root.AppendChild(day);
+        root.AppendChild(hour);
+        root.AppendChild(gameDuration);
 
         doc.AppendChild(root);
         doc.Save("Assets/Data/ProfilesData/" + p.Username + "/PlayerInfo.xml");
@@ -112,12 +158,24 @@ public class PlayerAPI : MonoBehaviour
     private void UpdateXML(Player p)
     {
         string filepath = VVC.playerInfoPath + p.Username;
-
         XmlDocument doc = new XmlDocument();
         doc.Load(filepath + "/PlayerInfo.xml");
         XmlNode node = doc.SelectSingleNode("/Player");
 
         node.SelectSingleNode("Gold").InnerText = p.Gold.ToString();
+        node.SelectSingleNode("CourtierFavors").InnerText = p.courtierFavors.ToString();
+        node.SelectSingleNode("NobilityFavors").InnerText = p.nobilityFavors.ToString();
+        node.SelectSingleNode("RoyalFavors").InnerText = p.royalFavors.ToString();
+        node.SelectSingleNode("GuildLocation").InnerText = p.guildLocation.x + " " + p.guildLocation.y + " " + p.guildLocation.z;
+        node.SelectSingleNode("Kingdom").InnerText = p.kingdom.ToString();
+        node.SelectSingleNode("Day").InnerText = p.currentDay.ToString();
+        node.SelectSingleNode("Hour").InnerText = p.currentHour.ToString();
+        node.SelectSingleNode("GameDuration").InnerText = p.currentGameDuration.ToString();
+
+        string unlocks = "";
+        for (int i = 0; i < VVC.unlocksNumber; i++)
+            unlocks += p.Unlocks[i].ToString() + " ";
+        node.SelectSingleNode("Unlocks").InnerText = unlocks;
 
         doc.Save(filepath + "/PlayerInfo.xml");
     }
@@ -129,7 +187,7 @@ public class PlayerAPI : MonoBehaviour
     public void UpdateRooms()
     {
         //After a room has been built/upgraded this function updates the data
-        int advLimit = 2; // base number
+        int advLimit = 2 + Player.adventurerLimitBonus; // base number
         int passiveSTR = 0, passiveAGY = 0, passiveINT = 0;
 
         for (int i = 0; i < Player.NumberOfRooms; i++)
@@ -169,5 +227,18 @@ public class PlayerAPI : MonoBehaviour
         if (Player.NumberOfRooms > Player.Rooms.Count)
             for (int i = 0; i < Player.NumberOfRooms - Player.Rooms.Count; i++)
                 Player.Rooms.Add(new Room());
+    }
+
+    void CalculateUnlocks()
+    {
+        if (Player.Unlocks[(int)UnlockedFeature.greatPlanner])
+            Player.adventurerLimitBonus += 3;
+        if (Player.Unlocks[(int)UnlockedFeature.negociator])
+            Player.adventurerLimitBonus += 10;
+    }
+
+    void ApplyUnlocks()
+    {
+        Player.adventurersLimit += Player.adventurerLimitBonus;
     }
 }

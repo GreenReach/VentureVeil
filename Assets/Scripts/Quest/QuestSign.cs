@@ -19,7 +19,7 @@ public class QuestSign : MonoBehaviour
     {
         getInstance = GameObject.Find("GameManager").GetComponent<GetInstance>();
         questAPI = getInstance.QuestAPI;
-        quest = questAPI.CreateQuest();
+        quest = questAPI.CreateQuest(getInstance.PlayerAPI.Player);
 
         description.text = quest.Description;
         if (quest.Difficulty <= 3)
@@ -33,7 +33,6 @@ public class QuestSign : MonoBehaviour
 
     public void StartAdventure()
     {
-        if (getInstance.GameManager.ConfigureAdventure(quest,transform.position))
-            Destroy(gameObject);
+        getInstance.GameManager.ConfigureAdventure(quest, transform.position, gameObject);
     }
 }

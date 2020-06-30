@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Xml;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using VentureVeilStructures;
 public class GameManager : MonoBehaviour
@@ -18,7 +19,7 @@ public class GameManager : MonoBehaviour
 
     //UI Prefabs
     public Sprite iconMorning, iconMidday, iconDusk, iconNight;
-    public GameObject RoomsScreen;
+    public GameObject RoomsScreen, pauseMenu;
 
     //UI
     public GameObject adventurerListMenu;
@@ -31,7 +32,7 @@ public class GameManager : MonoBehaviour
     public Text supplyText;
     public Text dateText;
     public Text adventurerCount;
-    public Text favorsText;
+    public Text courtierText, nobilityText, royalText;
 
     //World Map
     public GameObject worldMap;
@@ -47,6 +48,8 @@ public class GameManager : MonoBehaviour
     private int daysPassed;
     private int supplyDailyCost;
     private MouseModes mouseMode; // "UI" if in UI, "WORLD" if in world;
+    private int gameDuration;
+    private bool isPaused;
 
     //API & Scripts & VVS
     private GetInstance getInstance;
@@ -69,21 +72,40 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        //default configuration
+        Time.timeScale = 1;
+
         getInstance = GameObject.Find("GameManager").GetComponent<GetInstance>();
         getInstance.Load();
         LoadFromAPI();
 
         //calculate daily supply cost
         CalculateDailySupplyCost();
-
+        DurationSetup();
         UISetup();
 
         mouseMode = MouseModes.WORLD;
+        isPaused = false;
+
+        //Misc
+        if(PlayerPrefs.GetInt("Resume") == 1)
+        {
+            getInstance.Guild.transform.position = player.guildLocation;
+            daysPassed = player.currentDay;
+            hoursPassed = player.currentHour;
+            gameDuration = player.currentGameDuration;
+        }
+        else
+        {
+            player.guildLocation = getInstance.Guild.transform.position;
+        }
+
+        player.kingdom = PlayerPrefs.GetInt("Kingdom");
 
         wonderingAdventurerChance = 10;
 
-        InvokeRepeating("CreateRandomObjects",0, 3);
-        InvokeRepeating("UpdateHour", 0, 1);
+        InvokeRepeating("CreateRandomObjects", 0, VVC.spawnObjectsInterval);
+        InvokeRepeating("UpdateHour", 0, VVC.hourDuration);
     }
 
     void Update()
@@ -102,10 +124,15 @@ public class GameManager : MonoBehaviour
             if (hit.transform != null && hit.transform.name == "Plane")
             {
                   CreateQuest(CreateRandomMapPoint());
-                //  CreateWonderingAdventurer(CreateRandomMapPoint());
-                // CreateBuilder(CreateRandomMapPoint());
+                  CreateWonderingAdventurer(CreateRandomMapPoint());
+                 CreateBuilder(CreateRandomMapPoint());
                 
             }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            PauseGame();
         }
     }
 
@@ -138,6 +165,10 @@ public class GameManager : MonoBehaviour
     {
         hoursPassed++;
 
+        //Once every 6 hours the adventurers gain 1 stamina
+        if (hoursPassed % 6 == 0)
+            RestAdventurers();
+
         if (hoursPassed == 5)
             timeOfDay.sprite = iconMorning;
         else if (hoursPassed == 10)
@@ -158,10 +189,30 @@ public class GameManager : MonoBehaviour
     void UpdateDay()
     {
         daysPassed++;
+
+        if(daysPassed == gameDuration)
+        {
+            playerAPI.UpdatePlayer(player);
+            PlayerPrefs.SetInt("ReturningFromGame", 1);
+            PlayerPrefs.SetString("Username", player.Username);
+            SceneManager.LoadScene("Menu");
+        }
         player.Supply -= supplyDailyCost;
 
         //Adventurers get bonus XP
         PassiveXPGain();
+    }
+    void DurationSetup()
+    {
+        int duration = PlayerPrefs.GetInt("GameDuration");
+        if (duration == 0)
+            gameDuration = 100;
+        else if (duration == 1)
+            gameDuration = 200;
+        else if (duration == 2)
+            gameDuration = 365;
+        else if (duration == 3)
+            gameDuration = 100000000;
     }
 
     void PassiveXPGain()
@@ -175,6 +226,11 @@ public class GameManager : MonoBehaviour
 
             playerAdventurers[i].CheckLevelUp();
         }
+    }
+    void RestAdventurers()
+    {
+        for (int i = 0; i < playerAdventurers.Count; i++)
+            playerAdventurers[i].CurrentStamina = Mathf.Min(playerAdventurers[i].Stamina, playerAdventurers[i].CurrentStamina + 1);
     }
 
     void CreateWonderingAdventurer(Vector3 startPoint )
@@ -220,17 +276,35 @@ public class GameManager : MonoBehaviour
         goldText.text = "Gold " + player.Gold.ToString();
         supplyText.text = "Supply " + player.Supply.ToString() + "(-" + supplyDailyCost + ")";
         dateText.text = "Day " + daysPassed + "  Hour " + hoursPassed;
-        adventurerCount.text = "Adventurers " + playerAdventurers.Count + " / " + player.adventurersLimit;
-        favorsText.text = "CF: " + player.courtierFavors + " NF: " + player.nobilityFavors + " RF: " + player.royalFavors;
+        adventurerCount.text = playerAdventurers.Count + " / " + player.adventurersLimit;
+        courtierText.text = player.courtierFavors.ToString();
+        nobilityText.text = player.nobilityFavors.ToString();
+        royalText.text = player.royalFavors.ToString();
     }
     void RefreshUI()
     {
         goldText.text = "Gold " + player.Gold.ToString();
         supplyText.text = "Supply " + player.Supply.ToString() + "(-" + supplyDailyCost + ")";
         dateText.text = "Day " + daysPassed + "  Hour " + hoursPassed;
-        adventurerCount.text = "Adventurers " + playerAdventurers.Count + " / " + player.adventurersLimit;
-        favorsText.text = "CF: " + player.courtierFavors + " NF: " + player.nobilityFavors + " RF: " + player.royalFavors;
+        adventurerCount.text = player.NumberOfAdventurers + " / " + player.adventurersLimit;
+        courtierText.text = player.courtierFavors.ToString();
+        nobilityText.text = player.nobilityFavors.ToString();
+        royalText.text = player.royalFavors.ToString();
+    }
+    public void PauseGame()
+    {
+        isPaused = !isPaused;
 
+        if(isPaused)
+        {
+            Time.timeScale = 0;
+            pauseMenu.SetActive(true);
+        }
+        else
+        {
+            Time.timeScale = 1;
+            pauseMenu.SetActive(false);
+        }
     }
 
     void LoadFromAPI()
@@ -256,6 +330,12 @@ public class GameManager : MonoBehaviour
         finnishedQuests = finnishedQuestAPI.FinnishedQuests;
     }
 
+    public void SaveGame()
+    {
+        adventurerAPI.SaveAdventurers(player.Username);
+        playerAPI.UpdatePlayer(player);
+        finnishedQuestAPI.SaveFinnishedQuest(player.Username);
+    }
 
     public void UpdateGuildRooms()
     {
@@ -295,10 +375,11 @@ public class GameManager : MonoBehaviour
     
     public bool BuyAdventurer(Adventurer adv, int price)
     {
-        if (price > player.Gold || player.adventurersLimit == playerAdventurers.Count)
+        if (price > player.Gold || player.adventurersLimit == player.NumberOfAdventurers)
             return false;
 
         player.Gold -= price;
+        player.NumberOfAdventurers++;
         playerAdventurers.Add(adv);
         UpdateDailySupplyCost(adv);
         RefreshUI();
@@ -390,17 +471,19 @@ public class GameManager : MonoBehaviour
         return true;
     }
 
-    public bool ConfigureAdventure(Quest quest, Vector3 questPos)
+    public void ConfigureAdventure(Quest quest, Vector3 questPos, GameObject questSign)
     {
         GameObject adventure = Instantiate(AdventureScreen, new Vector3(0, 0, 0), Quaternion.identity);
-        adventure.GetComponent<AdventureScreen>().ConfigureScreen(quest, questPos);
-        return true;
+        adventure.GetComponent<AdventureScreen>().ConfigureScreen(quest, questPos, questSign);
     }
     public void StartAdventure(List<Adventurer> party, Quest quest, Vector3 questPos,int supplyLevel, int supplyCost)
     {
         if (player.Supply >= supplyCost)
         {
             player.Supply -= supplyCost;
+            for (int i = 0; i < party.Count; i++)
+                party[i].CurrentStamina -= quest.RequiredSTA;
+
             GameObject advParty = Instantiate(AdventurerParty, guild.transform.position, Quaternion.identity);
             advParty.GetComponent<AdventurerParty>().ConfigureParty(party, quest, questPos, guild.transform.position, supplyLevel);
             CalculateDailySupplyCost();

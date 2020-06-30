@@ -18,7 +18,7 @@ public class ConfigureAdventurerSelectPanel : MonoBehaviour
     public RectTransform strenghtXPMask, agilityXPMask, intelligenceXPMask;
 
     private ChooseAdventurerScreen chooseAdventurerScreen;
-    private int price;
+    private Quest quest;
 
     private void Start()
     {
@@ -30,7 +30,7 @@ public class ConfigureAdventurerSelectPanel : MonoBehaviour
         adventurer = adv;
         Name.text = adventurer.FirstName + " " + adventurer.LastName;
         Health.text = adventurer.Hp.ToString();
-        Stamina.text = adventurer.Stamina.ToString();
+        Stamina.text = adventurer.CurrentStamina.ToString() + '/' + adventurer.Stamina.ToString();
         Strenght.text = adventurer.Strength.ToString();
         Agility.text = adventurer.Agility.ToString();
         Intelligence.text = adventurer.Intelligence.ToString();
@@ -52,13 +52,15 @@ public class ConfigureAdventurerSelectPanel : MonoBehaviour
         Intelligence.text = "-";
     }
 
-    public void SetScript(ChooseAdventurerScreen script)
+    public void Configure(ChooseAdventurerScreen script, Quest q)
     {
         chooseAdventurerScreen = script;
+        quest = q;
     }
 
     public void SelectAdventurer()
     {
-        chooseAdventurerScreen.SelectAdventurer(adventurer);
+        if(adventurer.CurrentStamina >= quest.RequiredSTA)
+          chooseAdventurerScreen.SelectAdventurer(adventurer);
     }
 }

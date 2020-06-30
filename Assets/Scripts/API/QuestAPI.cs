@@ -7,7 +7,7 @@ using VentureVeilStructures;
 public class QuestAPI : MonoBehaviour
 {
     ///TO DO: lucreaza la statusurile de care are nevoie 
-    public Quest CreateQuest()
+    public Quest CreateQuest(Player p)
     {
         int reward, diff, STA, STR, AGY, INT, slots;
         string description;
@@ -25,16 +25,17 @@ public class QuestAPI : MonoBehaviour
         STR = Random.Range(int.Parse(doc.SelectSingleNode(path + "/MinStrenght").InnerText), int.Parse(doc.SelectSingleNode(path + "/MaxStrenght").InnerText));
         AGY = Random.Range(int.Parse(doc.SelectSingleNode(path + "/MinAgility").InnerText), int.Parse(doc.SelectSingleNode(path + "/MaxAgility").InnerText));
         INT = Random.Range(int.Parse(doc.SelectSingleNode(path + "/MinIntelligence").InnerText),int.Parse(doc.SelectSingleNode(path + "/MaxIntelligence").InnerText));
-        reward = CalculateReward(STA, STR, AGY, INT);
+        reward = CalculateReward(STA, STR, AGY, INT, p);
         diff = CalculateDifficulty(STR, AGY, INT);
 
         return new Quest(description, STA, STR, AGY, INT, reward, slots, diff);
 
     }
 
-    private int CalculateReward(int STA, int STR, int AGY, int INT)
+    private int CalculateReward(int STA, int STR, int AGY, int INT, Player p)
     {
         int reward = STA * 10 + STR * 15 + AGY * 15 + INT * 15;
+        reward += (reward * p.questRewardBonusPercent)/100;
         return reward;
     }
 

@@ -63,11 +63,32 @@ public class RoomScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        roomInfo.text = "Room Type: " + roomType + "\nRoom Level: " + roomLevel;
+        string roomName = "Empty room";
+
+        switch (roomType)
+        {
+            case 0:
+                roomName = "Empty room";
+                break;
+            case 1:
+                roomName = "Bedroom";
+                break;
+            case 2:
+                roomName = "Gym";
+                break;
+            case 3:
+                roomName = "Obstacle Course";
+                break;
+            case 4:
+                roomName = "Library";
+                break;
+        }
+
+        roomInfo.text = roomName + "\nLevel: " + roomLevel;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        roomInfo.text = "Room Type: - \nRoomLevel: -";
+        roomInfo.text = "Room Type \nRoom Level";
     }
 }

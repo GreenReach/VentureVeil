@@ -13,7 +13,10 @@ public class FinnishedQuestAPI : MonoBehaviour
         FinnishedQuests = new List<FinnishedQuest>();
         LoadFromXML(username);
     }
-
+    public void SaveFinnishedQuest(string username)
+    {
+        SaveToXML(username);
+    }
     public void CreateFinnishedQuestFile(Profile p)
     {
         CreateXML(p);
@@ -103,6 +106,124 @@ public class FinnishedQuestAPI : MonoBehaviour
         doc.Save("Assets/Data/ProfilesData/" + p.Username + "/FinnishedQuests.xml");
     }
 
+    void SaveToXML(string username)
+    {
+        string filepath = VVC.playerInfoPath + username;
+        XmlDocument doc = new XmlDocument();
+        doc.Load(filepath + "/FinnishedQuests.xml");
+
+        XmlNode nodeList = doc.SelectSingleNode("/FinnishedQuests");
+        nodeList.RemoveAll();
+
+        XmlNode root = doc.SelectSingleNode("/FinnishedQuests");
+        for(int i = 0; i < FinnishedQuests.Count; i++)
+        {
+            XmlNode fq = doc.CreateElement("FinnishedQuest");
+
+            XmlNode succ = doc.CreateElement("Successfull");
+            succ.InnerText = FinnishedQuests[i].Successfull.ToString();
+            XmlNode rating = doc.CreateElement("Rating");
+            rating.InnerText = FinnishedQuests[i].Rating.ToString();
+            XmlNode taleTold = doc.CreateElement("TaleTold");
+            taleTold.InnerText = FinnishedQuests[i].TaleTold.ToString();
+
+            fq.AppendChild(succ);
+            fq.AppendChild(rating);
+            fq.AppendChild(taleTold);
+
+            XmlNode quest = SaveQuestXML(FinnishedQuests[i].Quest,doc);
+            fq.AppendChild(quest);
+
+            XmlNode party = doc.CreateElement("Party");
+            for (int j =0; j < FinnishedQuests[i].Party.Count; j++)
+            {
+                XmlNode adv = SaveAdventurerXML(FinnishedQuests[i].Party[j], doc);
+                party.AppendChild(adv);
+            }
+            fq.AppendChild(party);
+
+            root.AppendChild(fq);
+        }
+
+        doc.Save(filepath + "/FinnishedQuests.xml");
+    }
+    XmlNode SaveQuestXML(Quest q, XmlDocument doc)
+    {
+        XmlNode quest = doc.CreateElement("Quest");
+
+        XmlNode desc = doc.CreateElement("Description");
+        desc.InnerText = q.Description;
+        XmlNode rSta = doc.CreateElement("RequiredSTA");
+        rSta.InnerText = q.RequiredSTA.ToString();
+        XmlNode rStr = doc.CreateElement("RequiredSTR");
+        rStr.InnerText = q.RequiredSTR.ToString();
+        XmlNode rAgy = doc.CreateElement("RequiredAGY");
+        rAgy.InnerText = q.RequiredAGY.ToString();
+        XmlNode rInt = doc.CreateElement("RequiredINT");
+        rInt.InnerText = q.RequiredINT.ToString();
+        XmlNode diff = doc.CreateElement("Difficulty");
+        diff.InnerText = q.Difficulty.ToString();
+        XmlNode reward = doc.CreateElement("Reward");
+        reward.InnerText = q.Reward.ToString();
+        XmlNode slots = doc.CreateElement("Slots");
+        slots.InnerText = q.Slots.ToString();
+
+        quest.AppendChild(desc);
+        quest.AppendChild(rSta);
+        quest.AppendChild(rStr);
+        quest.AppendChild(rAgy);
+        quest.AppendChild(rInt);
+        quest.AppendChild(diff);
+        quest.AppendChild(reward);
+        quest.AppendChild(slots);
+
+        return quest;
+
+    }
+    XmlNode SaveAdventurerXML(Adventurer a, XmlDocument doc)
+    {
+        XmlNode adv = doc.CreateElement("Adventurer");
+
+        XmlNode fName = doc.CreateElement("FirstName");
+        fName.InnerText = a.FirstName;
+        XmlNode lName = doc.CreateElement("LastName");
+        lName.InnerText = a.LastName;
+        XmlNode gender = doc.CreateElement("Gender");
+        gender.InnerText = a.Gender;
+        XmlNode hp = doc.CreateElement("Hp");
+        hp.InnerText = a.Hp.ToString();
+        XmlNode stamina = doc.CreateElement("Stamina");
+        stamina.InnerText = a.Stamina.ToString();
+        XmlNode str = doc.CreateElement("Strength");
+        str.InnerText = a.Strength.ToString();
+        XmlNode agy = doc.CreateElement("Agility");
+        agy.InnerText = a.Agility.ToString();
+        XmlNode intt = doc.CreateElement("Intelligence");
+        intt.InnerText = a.Intelligence.ToString();
+        XmlNode strXP = doc.CreateElement("StrengthXP");
+        strXP.InnerText = a.StrengthXP.ToString();
+        XmlNode agyXP = doc.CreateElement("AgilityXP");
+        agyXP.InnerText = a.AgilityXP.ToString();
+        XmlNode inttXP = doc.CreateElement("IntelligenceXP");
+        inttXP.InnerText = a.IntelligenceXP.ToString();
+        XmlNode cSta = doc.CreateElement("CurrentStamina");
+        cSta.InnerText = a.CurrentStamina.ToString();
+
+        adv.AppendChild(fName);
+        adv.AppendChild(lName);
+        adv.AppendChild(gender);
+        adv.AppendChild(hp);
+        adv.AppendChild(stamina);
+        adv.AppendChild(str);
+        adv.AppendChild(agy);
+        adv.AppendChild(intt);
+        adv.AppendChild(strXP);
+        adv.AppendChild(agyXP);
+        adv.AppendChild(inttXP);
+        adv.AppendChild(cSta);
+
+        return adv;
+    }
     public int CalculateRating( FinnishedQuest q)
     {
         return 10;

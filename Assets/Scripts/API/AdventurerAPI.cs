@@ -16,10 +16,13 @@ public class AdventurerAPI : MonoBehaviour
     {
         LoadFromXML(username);
     }
-
     public void CreateAdventurersFile(Profile p)
     {
         CreateXML(p);
+    }
+    public void SaveAdventurers(string username)
+    {
+        SaveToXML(username);
     }
 
     private void LoadFromXML(string username)
@@ -47,11 +50,69 @@ public class AdventurerAPI : MonoBehaviour
             adv.StrengthXP = int.Parse(node.SelectSingleNode("StrengthXP").InnerText);
             adv.AgilityXP = int.Parse(node.SelectSingleNode("AgilityXP").InnerText);
             adv.IntelligenceXP = int.Parse(node.SelectSingleNode("IntelligenceXP").InnerText);
+            adv.CurrentStamina = int.Parse(node.SelectSingleNode("CurrentStamina").InnerText);
             adventurers.Add(adv);
 
         }
     }
+    private void SaveToXML(string username)
+    {
+        string filepath = VVC.playerInfoPath + username;
+        XmlDocument doc = new XmlDocument();
+        doc.Load(filepath + "/Adventurers.xml");
 
+        XmlNode node = doc.SelectSingleNode("/Adventurers");
+        node.RemoveAll();
+
+        XmlNode root = doc.SelectSingleNode("/Adventurers");
+        for(int i = 0;i<adventurers.Count;i++)
+        {
+            XmlNode adv = doc.CreateElement("Adventurer");
+
+            XmlNode fName = doc.CreateElement("FirstName");
+            fName.InnerText = adventurers[i].FirstName;
+            XmlNode lName = doc.CreateElement("LastName");
+            lName.InnerText = adventurers[i].LastName;
+            XmlNode gender = doc.CreateElement("Gender");
+            gender.InnerText = adventurers[i].Gender;
+            XmlNode hp = doc.CreateElement("Hp");
+            hp.InnerText = adventurers[i].Hp.ToString();
+            XmlNode stamina = doc.CreateElement("Stamina");
+            stamina.InnerText = adventurers[i].Stamina.ToString();
+            XmlNode str = doc.CreateElement("Strength");
+            str.InnerText = adventurers[i].Strength.ToString();
+            XmlNode agy = doc.CreateElement("Agility");
+            agy.InnerText = adventurers[i].Agility.ToString();
+            XmlNode intt = doc.CreateElement("Intelligence");
+            intt.InnerText = adventurers[i].Intelligence.ToString();
+            XmlNode strXP = doc.CreateElement("StrengthXP");
+            strXP.InnerText = adventurers[i].StrengthXP.ToString();
+            XmlNode agyXP = doc.CreateElement("AgilityXP");
+            agyXP.InnerText = adventurers[i].AgilityXP.ToString();
+            XmlNode inttXP = doc.CreateElement("IntelligenceXP");
+            inttXP.InnerText = adventurers[i].IntelligenceXP.ToString();
+            XmlNode cSta = doc.CreateElement("CurrentStamina");
+            cSta.InnerText = adventurers[i].CurrentStamina.ToString();
+
+            adv.AppendChild(fName);
+            adv.AppendChild(lName);
+            adv.AppendChild(gender);
+            adv.AppendChild(hp);
+            adv.AppendChild(stamina);
+            adv.AppendChild(str);
+            adv.AppendChild(agy);
+            adv.AppendChild(intt);
+            adv.AppendChild(strXP);
+            adv.AppendChild(agyXP);
+            adv.AppendChild(inttXP);
+            adv.AppendChild(cSta);
+
+            root.AppendChild(adv);
+
+        }
+
+        doc.Save(filepath + "/Adventurers.xml");
+    }
     private void CreateXML(Profile p)
     {
         XmlDocument doc = new XmlDocument();

@@ -19,6 +19,7 @@ namespace VentureVeilStructures
         public int StrengthXP { get; set; }
         public int AgilityXP { get; set; }
         public int IntelligenceXP { get; set; }
+        public int CurrentStamina { get; set; }
 
         public Adventurer(string fname = "", string lname = "", string gender = "", int hp = 0, int stamina = 0, int strength = 0, int agility = 0, int intelligence = 0)
         {
@@ -33,6 +34,7 @@ namespace VentureVeilStructures
             StrengthXP = 0;
             AgilityXP = 0;
             IntelligenceXP = 0;
+            CurrentStamina = stamina;
         }
 
         public bool Equals(Adventurer adv)
@@ -40,7 +42,8 @@ namespace VentureVeilStructures
             if (FirstName.Equals(adv.FirstName) && LastName.Equals(adv.LastName) &&
                 Gender.Equals(adv.Gender) && Hp == adv.Hp && Stamina == adv.Stamina &&
                 Strength == adv.Strength && Agility == adv.Agility && Intelligence == adv.Intelligence
-                && StrengthXP == adv.StrengthXP && AgilityXP == adv.AgilityXP && IntelligenceXP == adv.IntelligenceXP)
+                && StrengthXP == adv.StrengthXP && AgilityXP == adv.AgilityXP && IntelligenceXP == adv.IntelligenceXP 
+                && CurrentStamina == adv.CurrentStamina)
                 return true;
             else
                 return false;
@@ -78,7 +81,7 @@ namespace VentureVeilStructures
         public string getInfo()
         {
             string info;
-            info = FirstName + LastName + '\n' + "HP:" + Hp.ToString() + " STA:" + Stamina.ToString() + "\n\n" + "STR:" + Strength.ToString() + " AGY:" + Agility.ToString() + " INT:" + Intelligence.ToString();
+            info = FirstName +" "+ LastName + '\n' + "HP:" + Hp.ToString() + " STA:" + Stamina.ToString() + "\n\n" + "STR:" + Strength.ToString() + " AGY:" + Agility.ToString() + " INT:" + Intelligence.ToString();
             return info;
         }
 
@@ -143,11 +146,17 @@ namespace VentureVeilStructures
         public string Username { get; set; }
         public int Gold { get; set; }
         public int Supply { get; set; }
+        public int NumberOfAdventurers { get; set; }
         public int NumberOfRooms { get; set; }
         public List<Room> Rooms { get; set; } //Room Type and its level
         public int courtierFavors { get; set; }
         public int nobilityFavors { get; set; }
         public int royalFavors { get; set; }
+        public Vector3 guildLocation { get; set; }
+        public int kingdom { get; set; } // 1 - easy, 2- medium, 3 - hard (used for resume to know witch to load)
+        public int currentDay { get; set; }
+        public int currentHour { get; set; }
+        public int currentGameDuration { get; set; }
 
         //calculated
         public int adventurersLimit { get; set; }
@@ -155,6 +164,17 @@ namespace VentureVeilStructures
         public int passiveAgilityGain { get; set; }
         public int passiveIntelligenceGain { get; set; }
 
+        //Item unlock list
+        public bool[] Unlocks { get; set; }
+
+        //items effects
+        public int questRewardBonusPercent { get; set; }
+        public int adventurerLimitBonus { get; set; }
+
+        public Player()
+        {
+            Unlocks = new bool[VVC.unlocksNumber];
+        }
     }
 
     public class Room
@@ -192,6 +212,14 @@ namespace VentureVeilStructures
         UI,
         WORLD
     };
+    public enum UnlockedFeature
+    {
+        mediumKingdom = 0,
+        hardKingdom = 1,
+        negociator = 2, // + 10% quest rewards
+        greatPlanner = 3 // + 3 adventurer limit
+
+    }
 
     public struct VVC // Venture veil constants
     {
@@ -209,6 +237,7 @@ namespace VentureVeilStructures
         public static int defaultGold = 100;
         public static int defaultSupply = 20;
         public static int defaultNumberOfRooms = 4;
+        public static int unlocksNumber = 5;
 
         //Filepaths
         public static string userDataDirPath = "Assets\\Data\\ProfilesData\\"; // used for creating the folder
@@ -218,5 +247,14 @@ namespace VentureVeilStructures
         public static int[] durationPrices = { 0,6,12,100 }; // 100Days, 200Days, 1 Year, unlimited prices
         public static int goldIncrement = 50;
         public static int goldIncrementCost = 1;
+
+        //Exchange favor prices
+        public static int mediumKingdomPrice = 1;
+        public static int hardKingdomPrice = 5;
+
+        //Time 
+        public static int hourDuration = 2; // how many seconds does an hour take
+        public static int spawnObjectsInterval = 3;
+
     }
 }

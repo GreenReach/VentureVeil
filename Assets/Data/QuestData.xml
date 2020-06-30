@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <Quests>
   <Quest>
-    <Description>Description A</Description>
+    <Description>A thief has stolen my mothers earrings at the market a couple days ago and ran away into the forest We offer a handsome reward for the person that catches this thief and returns the earrings. </Description>
     <MinStamina>1</MinStamina>
     <MaxStamina>4</MaxStamina>
     <MinStrenght>1</MinStrenght>
@@ -10,7 +10,7 @@
     <MaxAgility>4</MaxAgility>
     <MinIntelligence>1</MinIntelligence>
     <MaxIntelligence>4</MaxIntelligence>
-    <Slots>1</Slots>
+    <Slots>3</Slots>
   </Quest>
   <Quest>
     <Description>Description B</Description>

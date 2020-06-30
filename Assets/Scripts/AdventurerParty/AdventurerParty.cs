@@ -25,8 +25,9 @@ public class AdventurerParty : MonoBehaviour
     private Vector3 speed,distance;
     private float timeToDestination, statsSpeedFactor;
     private bool configured = false;
+    public GameObject PartySize1, PartySize2, PartySize3, PartySize4;
 
-   private void Start()
+    private void Start()
     {
         getInstance = GameObject.Find("GameManager").GetComponent<GetInstance>();
 
@@ -65,6 +66,14 @@ public class AdventurerParty : MonoBehaviour
         timeToCompleteQuest = (quest.RequiredAGY + quest.RequiredSTR + quest.RequiredINT) / 3;
         configured = true;
 
+        //Show the  correct gameobject
+        if (party.Count == 1)
+            PartySize1.SetActive(true);
+        else if (party.Count == 2)
+            PartySize2.SetActive(true);
+        else if (party.Count == 3)
+            PartySize3.SetActive(true);
+        else PartySize4.SetActive(true);
     }
 
     private void CalculateQuestRoadVariables()

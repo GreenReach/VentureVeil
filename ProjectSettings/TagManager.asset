@@ -38,6 +38,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: BackgroundMountains
+    uniqueID: 2312843223
+    locked: 0
   - name: PanelsBackground
     uniqueID: 1207485875
     locked: 0
@@ -46,4 +49,7 @@ TagManager:
     locked: 0
   - name: PanelsUI
     uniqueID: 4270407307
+    locked: 0
+  - name: Clouds
+    uniqueID: 1351043919
     locked: 0
